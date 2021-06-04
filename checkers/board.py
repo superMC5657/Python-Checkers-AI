@@ -64,13 +64,26 @@ class Board:
     # draw the board， and pieces
     def draw(self, win):
         self.draw_squares(win)
+        flag = True
+        valid_pieces = set()
+        run_pieces = set()
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]
                 if piece != 0:
                     piece.draw(win)
-                    if len(self.get_valid_moves(piece)):
-                        piece.draw_with_run(win)
+                    valid = self.get_valid_moves(piece)
+                    if len(valid):
+                        run_pieces.add(piece)
+                        for k, skipped in valid.items():
+                            if skipped:
+                                flag = False
+                                valid_pieces.add(piece)
+        for piece in valid_pieces:
+            piece.draw_with_run(win)
+        if flag:
+            for piece in run_pieces:
+                piece.draw_with_run(win)
 
     # remove killer piece
     def remove(self, pieces):
