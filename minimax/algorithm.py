@@ -38,6 +38,15 @@ def alphabeta(position, depth, max_player, game, alpha=-sys.maxsize, beta=sys.ma
         return minEval, best_move
 
 
+import random
+
+
+def random_move(position, depth, max_player, game):
+    move_list = get_all_moves(position, max_player, game)
+    move = random.choice(move_list)
+    return move.evaluate(), move
+
+
 def minimax(position, depth, max_player, game):
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
