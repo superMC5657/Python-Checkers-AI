@@ -6,6 +6,7 @@ RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 
 
+# AI move use minimax with alphabeta
 def alphabeta(position, depth, max_player, game, alpha=-sys.maxsize, beta=sys.maxsize):
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
@@ -41,12 +42,14 @@ def alphabeta(position, depth, max_player, game, alpha=-sys.maxsize, beta=sys.ma
 import random
 
 
+# AI random move function
 def random_move(position, depth, max_player, game):
     move_list = get_all_moves(position, max_player, game)
     move = random.choice(move_list)
     return move.evaluate(), move
 
 
+# AI move use minimax
 def minimax(position, depth, max_player, game):
     if depth == 0 or position.winner() != None:
         return position.evaluate(), position
@@ -81,6 +84,7 @@ def simulate_move(piece, move, board, game, skip):
     return board
 
 
+# find all of pieces moves in the board
 def get_all_moves(board, color, game):
     moves = []
 
@@ -96,6 +100,7 @@ def get_all_moves(board, color, game):
     return moves
 
 
+# draw valid moves  process
 def draw_moves(game, board, piece):
     valid_moves = board.get_valid_moves(piece)
     board.draw(game.win)

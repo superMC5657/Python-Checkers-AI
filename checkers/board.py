@@ -10,15 +10,18 @@ class Board:
         self.red_kings = self.white_kings = 0
         self.create_board()
 
+    # draw the background
     def draw_squares(self, win):
         win.fill(BLACK)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, RED, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
+    # calculate the score
     def evaluate(self):
         return self.white_left - self.red_left + (self.white_kings * 0.5 - self.red_kings * 0.5)
 
+    # find all of piece with one color
     def get_all_pieces(self, color):
         pieces = []
         for row in self.board:
@@ -27,6 +30,7 @@ class Board:
                     pieces.append(piece)
         return pieces
 
+    # move piece in the board
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
@@ -38,9 +42,11 @@ class Board:
             else:
                 self.red_kings += 1
 
+    # find piece with position
     def get_piece(self, row, col):
         return self.board[row][col]
 
+    # generate a board
     def create_board(self):
         for row in range(ROWS):
             self.board.append([])
@@ -55,6 +61,7 @@ class Board:
                 else:
                     self.board[row].append(0)
 
+    # draw the board， and pieces
     def draw(self, win):
         self.draw_squares(win)
         for row in range(ROWS):
@@ -65,6 +72,7 @@ class Board:
                     if len(self.get_valid_moves(piece)):
                         piece.draw_with_run(win)
 
+    # remove killer piece
     def remove(self, pieces):
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
@@ -82,6 +90,7 @@ class Board:
 
         return None
 
+    # find piece's paths
     def get_valid_moves(self, piece):
         moves = {}
         left = piece.col - 1
@@ -97,6 +106,7 @@ class Board:
 
         return moves
 
+    # judge which paths can move, and return killed pieces.
     def _traverse_left(self, start, stop, step, color, left, skipped=[]):
         moves = {}
         last = []

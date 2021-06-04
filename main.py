@@ -40,17 +40,19 @@ def main():
     while run:
         clock.tick(FPS)
 
-        # if game.turn == WHITE:
-        #     if random.randint(0, 5) == 1:
-        #         value, new_board = random_move(game.get_board(), depth, WHITE, game)
-        #     else:
-        #         value, new_board = func(game.get_board(), depth, WHITE, game)
-        #     game.ai_move(new_board)
+        # AI is WHITE Piece
+        if game.turn == WHITE:
+            if random.randint(0, 5) == 1:
+                value, new_board = random_move(game.get_board(), depth, WHITE, game)
+            else:
+                value, new_board = func(game.get_board(), depth, WHITE, game)
+            game.ai_move(new_board)
 
         if game.winner() != None:
             print(game.winner())
             run = False
 
+        # record operate by people
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False

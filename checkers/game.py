@@ -8,7 +8,7 @@ class Game:
         self._init()
         self.win = win
 
-
+    # update canvas
     def update(self):
         self.board.draw(self.win)
         self.draw_valid_moves(self.valid_moves)
@@ -26,6 +26,7 @@ class Game:
     def reset(self):
         self._init()
 
+    # when people select a piece,
     def select(self, row, col):
         if self.selected:
             result = self._move(row, col)
@@ -41,6 +42,7 @@ class Game:
 
         return False
 
+    # Crowning King in Checkers when a king is killed, killer become the other king.
     def _move(self, row, col):
         piece = self.board.get_piece(row, col)
         if self.selected and piece == 0 and (row, col) in self.valid_moves:
@@ -62,12 +64,23 @@ class Game:
 
         return True
 
+    # when piece in Forced Captures status, flag is False
     def draw_valid_moves(self, moves):
+        flag = True
         for move in moves:
             row, col = move
-            pygame.draw.circle(self.win, BLUE,
-                               (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
+            skipped = moves[move]
+            if skipped:
+                pygame.draw.circle(self.win, BLUE,
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
+                flag = False
+        if flag:
+            for move in moves:
+                row, col = move
+                pygame.draw.circle(self.win, BLUE,
+                                   (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
 
+    # change turn
     def change_turn(self):
         self.valid_moves = {}
         if self.turn == RED:
@@ -78,6 +91,7 @@ class Game:
     def get_board(self):
         return self.board
 
+    # AI move in the board
     def ai_move(self, board):
         self.board = board
         self.change_turn()
